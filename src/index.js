@@ -1,11 +1,10 @@
 import "./style.css";
+import contentContainer from "./maincontent";
+const header = document.createElement("div");
+const title = document.createElement("h1");
+title.innerHTML = "To Do List";
+header.setAttribute("id", "header");
+header.appendChild(title);
 
-function component() {
-	const a = document.createElement("h2");
-	a.innerHTML = "hello my guy";
-	a.classList.add("hello");
-
-	return a;
-}
-
-document.body.appendChild(component());
+document.body.appendChild(header);
+document.body.appendChild(contentContainer);

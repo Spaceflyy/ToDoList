@@ -1,3 +1,56 @@
-.hello {
-	color: red;
+html,
+body {
+	display: flex;
+	flex-direction: column;
+	height: 100svh;
+	box-sizing: border-box;
+}
+
+#sidebar li p,
+#sidebar ul,
+#header h1,
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+
+#header h1 {
+	padding: 10px;
+}
+#header {
+	display: flex;
+	color: rgb(236, 236, 236);
+	align-items: center;
+	background: linear-gradient(
+		90deg,
+		rgba(33, 147, 176, 1) 0%,
+		rgba(109, 213, 237, 1) 100%
+	);
+	height: 60px;
+}
+
+#mainContent {
+	display: flex;
+	flex: 1;
+	overflow: auto;
+}
+
+#sidebar {
+	background-color: rgb(230, 230, 230);
+	width: 250px;
+	height: 100%;
+}
+#sidebar ul {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	list-style: none;
+	padding: 10px;
+}
+
+#sidebar li {
+	border-radius: 10px;
+	background-color: rgb(240, 240, 240);
+	padding: 10px;
 }
