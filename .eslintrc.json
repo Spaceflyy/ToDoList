@@ -11,6 +11,6 @@
 	},
 	"rules": {
 		"quotes": ["error", "double"],
-		"arrow-body-style": ["error", "off"]
+		"arrow-body-style": ["error", "always"]
 	}
 }
