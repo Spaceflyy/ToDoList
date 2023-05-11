@@ -39,6 +39,3 @@ newController.model.addProject("", "Test Project6", {
 	desc: "Test Desc",
 });
 newController.view().updateProjects(newController.model.projectsList);
-console.log(newController.model.projectsList);
-
-console.log(newController);
