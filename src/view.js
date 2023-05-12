@@ -7,7 +7,7 @@ const view = () => {
 
 	root.append(projectList);
 
-	const updateProjects = (projects) => {
+	function updateProjects(projects) {
 		while (projectList.firstChild) {
 			projectList.removeChild(projectList.firstChild);
 		}
@@ -22,9 +22,15 @@ const view = () => {
 				projectList.append(proj);
 			});
 		}
-	};
+	}
 
-	return { updateProjects };
+	function handleClick(handler) {
+		root.addEventListener("click", (event) => {
+			handler(event);
+		});
+	}
+
+	return { handleClick, updateProjects };
 };
 
 export default view;
