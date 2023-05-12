@@ -1,5 +1,7 @@
 const view = () => {
 	const root = document.getElementById("sidebar");
+	const form = document.getElementById("projectForm");
+	const titleInput = document.getElementById("titleInput");
 	// const taskSectionTitle = document.createElement("h1");
 	// taskSectionTitle.textContent = "To Dos";
 
@@ -12,8 +14,10 @@ const view = () => {
 			projectList.removeChild(projectList.firstChild);
 		}
 		if (projects.length === 0) {
-			const empty = document.createElement("p");
-			empty.textContent = "Nothing here... Create a new project";
+			const empty = document.createElement("li");
+			empty.setAttribute("id", "addProjectBtn");
+
+			empty.textContent = "+";
 			projectList.append(empty);
 		} else {
 			projects.forEach((element) => {
@@ -24,13 +28,19 @@ const view = () => {
 		}
 	}
 
-	function handleClick(handler) {
-		root.addEventListener("click", (event) => {
-			handler(event);
+	const getTitleText = () => {
+		return titleInput.value;
+	};
+
+	function bindClick(handler) {
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			handler(getTitleText());
+			form.reset();
 		});
 	}
 
-	return { handleClick, updateProjects };
+	return { bindClick, updateProjects };
 };
 
 export default view;

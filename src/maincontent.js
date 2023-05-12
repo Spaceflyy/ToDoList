@@ -11,9 +11,11 @@ const createMainElements = () => {
 	const thisWeek = document.createElement("p");
 	const divider = document.createElement("div");
 	const projectContainer = document.createElement("div");
+	const projectsTitle = document.createElement("h2");
 	projectContainer.setAttribute("id", "projectContainer");
 	taskContainer.setAttribute("id", "tasks");
 
+	projectsTitle.textContent = "Projects";
 	all.innerHTML = "All";
 	today.innerHTML = "Today";
 	thisWeek.innerHTML = "This Week";
@@ -30,6 +32,7 @@ const createMainElements = () => {
 	sidebarList.appendChild(todayContainer);
 	sidebarList.appendChild(thisWeekContainer);
 	sidebar.appendChild(sidebarList);
+	sidebar.appendChild(projectsTitle);
 	sidebar.appendChild(divider);
 	sidebar.appendChild(projectContainer);
 	contentContainer.appendChild(sidebar);

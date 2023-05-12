@@ -5,7 +5,7 @@ body {
 	height: 100svh;
 	box-sizing: border-box;
 }
-
+#sidebar h2,
 #sidebar li p,
 #sidebar ul,
 #header h1,
@@ -15,7 +15,9 @@ body {
 	padding: 0;
 }
 
-#header h1 {
+#header h1,
+#sidebar ul,
+#sidebar h2 {
 	padding: 10px;
 }
 #header {
@@ -30,6 +32,18 @@ body {
 	height: 60px;
 }
 
+.modal {
+	z-index: 1;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	border-radius: 5px;
+	transform: translate(-50%, -50%);
+	background-color: red;
+	height: 300px;
+	width: 500px;
+}
+
 #mainContent {
 	display: flex;
 	flex: 1;
@@ -41,12 +55,12 @@ body {
 	width: 250px;
 	height: 100%;
 }
+
 #sidebar ul {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
 	list-style: none;
-	padding: 10px;
 }
 
 #sidebar li {
@@ -61,6 +75,13 @@ body {
 	transition: 0.3s;
 	border: solid 1px rgba(33, 147, 176, 1);
 	cursor: pointer;
+}
+
+#sidebar #addProjectBtn {
+	text-align: center;
+	font-weight: 700;
+	font-size: 3rem;
+	padding: 0;
 }
 
 .line {
