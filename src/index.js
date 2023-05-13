@@ -1,4 +1,6 @@
+/* eslint-disable no-unused-vars */
 import "./style.css";
+import PubSub from "pubsub-js";
 import view from "./view";
 import model from "./model";
 import createMainElements from "./maincontent";
@@ -22,6 +24,7 @@ const projectTitleInput = document.createElement("input");
 const submitBtn = document.createElement("input");
 submitBtn.setAttribute("type", "submit");
 const cancelBtn = document.createElement("button");
+cancelBtn.setAttribute("type", "button");
 cancelBtn.textContent = "Cancel";
 
 projectTitleInput.setAttribute("required", "");
@@ -42,10 +45,24 @@ document.body.appendChild(createMainElements());
 const controller = (() => {
 	const viewable = view();
 
+	viewable.updateProjects(model.projectsList);
+
 	const handleAddProject = (projectTitle) => {
-		model.addProject(undefined, projectTitle);
-		viewable.updateProjects(model.projectsList);
+		model.addProject(0, projectTitle);
 	};
 
-	viewable.bindClick(handleAddProject);
+	const handleClick = (event) => {
+		if (event.target.classList.value === "project") {
+			viewable.updateTasks(
+				model.getProjectTasks(event.target.getAttribute("data-project-id"))
+			);
+		}
+	};
+
+	PubSub.subscribe("ListUpdated", (msg, data) => {
+		viewable.updateProjects(data);
+	});
+
+	viewable.bindClick(handleClick);
+	viewable.bindTitleSubmit(handleAddProject);
 })(model, view);
