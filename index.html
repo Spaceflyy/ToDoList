@@ -1,9 +1,41 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>To Do List</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"><script defer src="main.js"></script></head>
-  <body>
-  </body>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>To Do List</title>
+	<script defer src="main.js"></script></head>
+	<body>
+		<header><h1>To Do List</h1></header>
+		<div class="modal">
+			<header><h2>Add Project</h2></header>
+			<form id="projectForm">
+				<ul>
+					<li>
+						<label>Title<input required="" type="text" id="titleInput" /></label>
+						<div class="line"></div>
+						<div class="buttonContainer">
+							<button id="closeButton" type="button">Cancel</button
+							><input type="submit" />
+						</div>
+					</li>
+				</ul>
+			</form>
+		</div>
+		<div id="mainContent">
+			<div id="sidebar">
+				<ul>
+					<li><p>All</p></li>
+					<li><p>Today</p></li>
+					<li><p>This Week</p></li>
+				</ul>
+				<h2>Projects</h2>
+				<div class="line"></div>
+
+				<ul id="projectList"></ul>
+			</div>
+			<div id="tasks">This is where all the tasks will go</div>
+		</div>
+	</body>
 </html>
