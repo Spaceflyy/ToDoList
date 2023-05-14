@@ -4,20 +4,20 @@ import PubSub from "pubsub-js";
 const model = () => {
 	const currentProject = null;
 	const projectsList = [
-		{
-			id: 0,
-			title: "Test Project 1",
-			taskList: [{ id: 0, title: "Test Task1", desc: "Test desc" }],
-		},
-		{
-			id: 1,
-			title: "Test Project 2",
-			taskList: [
-				{ id: 0, title: "Test Task1", desc: "Test desc" },
-				{ id: 0, title: "Test Task1", desc: "Test desc" },
-				{ id: 0, title: "Test Task1", desc: "Test desc" },
-			],
-		},
+		// {
+		// 	id: 0,
+		// 	title: "Test Project 1",
+		// 	taskList: [{ id: 0, title: "Test Task1", desc: "Test desc" }],
+		// },
+		// {
+		// 	id: 1,
+		// 	title: "Test Project 2",
+		// 	taskList: [
+		// 		{ id: 0, title: "Test Task1", desc: "Test desc" },
+		// 		{ id: 0, title: "Test Task1", desc: "Test desc" },
+		// 		{ id: 0, title: "Test Task1", desc: "Test desc" },
+		// 	],
+		// },
 	];
 
 	const project = (id, title, taskList) => {

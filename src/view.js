@@ -1,16 +1,13 @@
+/* eslint-disable no-unused-expressions */
 const view = () => {
 	const root = document.getElementById("sidebar");
 	const form = document.getElementById("projectForm");
 	const titleInput = document.getElementById("titleInput");
-	// const taskSectionTitle = document.createElement("h1");
-	// taskSectionTitle.textContent = "To Dos";
-
-	const projectList = document.createElement("ul");
 	const taskSection = document.getElementById("tasks");
+	const projectList = document.getElementById("projectList");
+	const closeButton = document.getElementById("closeButton");
 
-	root.append(projectList);
-
-	function updateProjects(projects) {
+	const updateProjects = (projects) => {
 		while (projectList.firstChild) {
 			projectList.removeChild(projectList.firstChild);
 		}
@@ -29,9 +26,9 @@ const view = () => {
 				projectList.append(proj);
 			});
 		}
-	}
+	};
 
-	function updateTasks(tasks) {
+	const updateTasks = (tasks) => {
 		while (taskSection.firstChild) {
 			taskSection.removeChild(taskSection.firstChild);
 		}
@@ -50,27 +47,38 @@ const view = () => {
 				taskSection.append(task);
 			});
 		}
-	}
+	};
+
+	const showModal = () => {
+		const modal = document.querySelector(".modal");
+		modal.style.display === "block"
+			? (modal.style.display = "none")
+			: (modal.style.display = "block");
+	};
 
 	const getTitleText = () => {
 		return titleInput.value;
 	};
 
-	function bindTitleSubmit(handler) {
+	const bindTitleSubmit = (handler) => {
 		form.addEventListener("submit", (event) => {
 			event.preventDefault();
 			handler(getTitleText());
 			form.reset();
 		});
-	}
+	};
 
 	function bindClick(handler) {
 		root.addEventListener("click", (event) => {
 			handler(event);
 		});
+
+		closeButton.addEventListener("click", (event) => {
+			handler(event);
+		});
 	}
 
-	return { updateTasks, bindClick, bindTitleSubmit, updateProjects };
+	return { showModal, updateTasks, bindClick, bindTitleSubmit, updateProjects };
 };
 
 export default view;

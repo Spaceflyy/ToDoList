@@ -12,12 +12,13 @@ module.exports = {
 	plugins: [
 		new HtmlWebpackPlugin({
 			title: "To Do List",
+			template: "/src/template.html",
 		}),
 	],
 	output: {
 		filename: "[name].js",
 		path: path.resolve(__dirname, "dist"),
-		// clean: true,
+		clean: true,
 	},
 	// optimization: {
 	// 	runtimeChunk: "single",

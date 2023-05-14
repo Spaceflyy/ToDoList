@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-unused-vars */
 import "./style.css";
 import PubSub from "pubsub-js";
@@ -12,36 +13,6 @@ title.innerHTML = "To Do List";
 header.setAttribute("id", "header");
 header.appendChild(title);
 
-// /temp place for modal move when finished
-
-const form = document.createElement("form");
-form.setAttribute("id", "projectForm");
-const modal = document.createElement("div");
-modal.classList.add("modal");
-
-const projectTitleLabel = document.createElement("label");
-const projectTitleInput = document.createElement("input");
-const submitBtn = document.createElement("input");
-submitBtn.setAttribute("type", "submit");
-const cancelBtn = document.createElement("button");
-cancelBtn.setAttribute("type", "button");
-cancelBtn.textContent = "Cancel";
-
-projectTitleInput.setAttribute("required", "");
-projectTitleLabel.textContent = "Title:";
-projectTitleInput.setAttribute("type", "text");
-projectTitleInput.setAttribute("id", "titleInput");
-projectTitleLabel.appendChild(projectTitleInput);
-form.appendChild(projectTitleLabel);
-form.appendChild(cancelBtn);
-form.appendChild(submitBtn);
-modal.appendChild(form);
-
-// /temp place for modal move when finished
-document.body.appendChild(header);
-document.body.appendChild(modal);
-document.body.appendChild(createMainElements());
-
 const controller = (() => {
 	const viewable = view();
 
@@ -52,10 +23,19 @@ const controller = (() => {
 	};
 
 	const handleClick = (event) => {
-		if (event.target.classList.value === "project") {
+		const { target } = event;
+
+		if (target.classList.contains("project")) {
 			viewable.updateTasks(
 				model.getProjectTasks(event.target.getAttribute("data-project-id"))
 			);
+		}
+
+		if (
+			target.getAttribute("id") === "addProjectBtn" ||
+			target.getAttribute("id") === "closeButton"
+		) {
+			viewable.showModal();
 		}
 	};
 
