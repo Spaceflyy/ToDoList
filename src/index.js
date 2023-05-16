@@ -4,7 +4,6 @@ import "./style.css";
 import PubSub from "pubsub-js";
 import view from "./view";
 import model from "./model";
-import createMainElements from "./maincontent";
 
 const header = document.createElement("div");
 const title = document.createElement("h1");
@@ -24,10 +23,9 @@ const controller = (() => {
 
 	const handleClick = (event) => {
 		const { target } = event;
-
 		if (target.classList.contains("project")) {
 			viewable.updateTasks(
-				model.getProjectTasks(event.target.getAttribute("data-project-id"))
+				model.getProjectTasks(target.getAttribute("data-project-id"))
 			);
 		}
 
@@ -36,6 +34,10 @@ const controller = (() => {
 			target.getAttribute("id") === "closeButton"
 		) {
 			viewable.showModal();
+		}
+
+		if (target.getAttribute("id") === "projDel") {
+			model.deleteProject(target.parentElement.getAttribute("data-project-id"));
 		}
 	};
 

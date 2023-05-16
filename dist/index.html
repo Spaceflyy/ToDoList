@@ -10,6 +10,7 @@
 		<header><h1>To Do List</h1></header>
 		<div class="modal">
 			<header><h2>Add Project</h2></header>
+
 			<form id="projectForm">
 				<ul>
 					<li>
@@ -23,6 +24,7 @@
 				</ul>
 			</form>
 		</div>
+
 		<div id="mainContent">
 			<div id="sidebar">
 				<ul>
@@ -32,10 +34,16 @@
 				</ul>
 				<h2>Projects</h2>
 				<div class="line"></div>
-
 				<ul id="projectList"></ul>
 			</div>
-			<div id="tasks">This is where all the tasks will go</div>
+			<div id="tasks">
+				<div id="taskContainer">
+					<h2>Task Title</h2>
+					<div id="taskList"></div>
+					<div class="line"></div>
+					<button type="button">Add Task</button>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>

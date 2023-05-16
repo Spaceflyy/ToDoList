@@ -49,8 +49,8 @@ header {
 	transform: translate(-50%, -50%);
 	background-color: var(--off-white);
 	filter: drop-shadow(0px 2px 5px #0000005b);
-	height: 250px;
-	width: 400px;
+	width: 20%;
+	height: 25%;
 }
 
 .modal header {
@@ -59,26 +59,20 @@ header {
 	border-top-right-radius: 5px;
 }
 
-form ul {
+form {
+	height: 80%;
 	font-size: 1.25rem;
 	list-style: none;
-
 	padding: 10px;
+	/* border: red solid; */
 }
 
 form ul li {
 	display: flex;
 	flex-direction: column;
-	gap: 30px;
+	gap: 20px;
 	align-items: center;
 }
-/* form {
-	display: flex;
-	justify-content: center;
-	max-height: 200px;
-	height: 100%;
-	list-style: none;
-} */
 
 label,
 label input {
@@ -94,10 +88,24 @@ label input {
 	flex: 1;
 	overflow: auto;
 }
+/* #tasks,
+#taskList {
+	border: red solid;
+} */
+
+#tasks {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
+#taskContainer {
+	width: 70%;
+}
 
 #sidebar {
 	background-color: rgb(230, 230, 230);
-	width: 250px;
+	min-width: 250px;
 	height: 100%;
 }
 
@@ -109,6 +117,11 @@ label input {
 }
 
 #sidebar li {
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-auto-flow: column;
+	align-items: center;
+	gap: 5px;
 	transition: 0.3s;
 	border-radius: 5px;
 	background-color: var(--off-white);
@@ -141,4 +154,11 @@ label input {
 		rgba(33, 147, 176, 1) 0%,
 		rgba(109, 213, 237, 1) 100%
 	);
+}
+
+@media only screen and (max-width: 600px) {
+	.modal {
+		width: 90%;
+		height: 28%;
+	}
 }
