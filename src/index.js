@@ -31,6 +31,7 @@ const controller = (() => {
 		if (target.classList.contains("project")) {
 			model.setCurrentProject(target.getAttribute("data-project-id"));
 			viewable.updateTasks(
+				model.projectsList[model.getCurrentProject()].title,
 				model.getProjectTasks(target.getAttribute("data-project-id"))
 			);
 		}

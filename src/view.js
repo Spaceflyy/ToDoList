@@ -90,12 +90,14 @@ const view = () => {
 		}
 	};
 
-	const updateTasks = (tasks) => {
+	const updateTasks = (projTitle, tasks) => {
 		while (taskSection.firstChild) {
 			taskSection.removeChild(taskSection.firstChild);
 		}
+		const title = document.querySelector("#taskContainer h2");
+		title.textContent = projTitle;
 		if (tasks.length === 0) {
-			const empty = document.createElement("h1");
+			const empty = document.createElement("h3");
 			empty.textContent = "There's nothing here, Create a new task!";
 			taskSection.append(empty);
 		} else {
