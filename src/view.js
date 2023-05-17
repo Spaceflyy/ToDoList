@@ -5,11 +5,18 @@ import edt from "./icons/edit.svg";
 
 const view = () => {
 	const root = document.getElementById("sidebar");
-	const form = document.getElementById("projectForm");
+	const projectform = document.getElementById("projectForm");
+	const taskForm = document.getElementById("taskForm");
 	const titleInput = document.getElementById("titleInput");
 	const taskSection = document.getElementById("taskList");
 	const projectList = document.getElementById("projectList");
-	const closeButton = document.getElementById("closeButton");
+	const projCloseButton = document.getElementById("projCloseButton");
+	const taskCloseButton = document.getElementById("taskCloseButton");
+	const addTaskBtn = document.getElementById("addTaskBtn");
+	const taskTitleInput = document.getElementById("taskTitleInput");
+	const taskDescInput = document.getElementById("descInput");
+	const taskDateInput = document.getElementById("dueInput");
+	const taskPriInput = document.getElementById("priInput");
 
 	const createImg = (name, image, idName) => {
 		name = new Image();
@@ -18,22 +25,41 @@ const view = () => {
 		return name;
 	};
 
-	const showModal = () => {
-		const modal = document.querySelector(".modal");
-		modal.style.display === "block"
+	const showModal = (thisModal) => {
+		const modal = document.querySelector(thisModal);
+
+		modal.style.display === "flex"
 			? (modal.style.display = "none")
-			: (modal.style.display = "block");
+			: (modal.style.display = "flex");
 	};
 
 	const getTitleText = () => {
 		return titleInput.value;
 	};
 
+	const getTaskInfo = () => {
+		const task = [
+			taskTitleInput.value,
+			taskDescInput.value,
+			taskDateInput.value,
+			taskPriInput.value,
+		];
+		return task;
+	};
+
 	const bindTitleSubmit = (handler) => {
-		form.addEventListener("submit", (event) => {
+		projectform.addEventListener("submit", (event) => {
 			event.preventDefault();
 			handler(getTitleText());
-			form.reset();
+			projectform.reset();
+		});
+	};
+
+	const bindTaskSubmit = (handler) => {
+		taskForm.addEventListener("submit", (event) => {
+			event.preventDefault();
+			handler(getTaskInfo());
+			// taskForm.reset();
 		});
 	};
 
@@ -41,12 +67,15 @@ const view = () => {
 		while (projectList.firstChild) {
 			projectList.removeChild(projectList.firstChild);
 		}
-		if (projects.length === 0) {
-			const empty = document.createElement("li");
-			empty.setAttribute("id", "addProjectBtn");
+		const addProjBtn = document.createElement("li");
+		addProjBtn.setAttribute("id", "addProjectBtn");
+		addProjBtn.textContent = "+";
 
-			empty.textContent = "+";
+		if (projects.length === 0) {
+			const empty = document.createElement("p");
+			empty.textContent = "There's nothing here! Add a Project!";
 			projectList.append(empty);
+			projectList.append(addProjBtn);
 		} else {
 			projects.forEach((element) => {
 				const proj = document.createElement("li");
@@ -56,6 +85,7 @@ const view = () => {
 				proj.append(createImg("editIcon", edt));
 				proj.append(createImg("delIcon", del, "projDel"));
 				projectList.append(proj);
+				projectList.append(addProjBtn);
 			});
 		}
 	};
@@ -67,8 +97,6 @@ const view = () => {
 		if (tasks.length === 0) {
 			const empty = document.createElement("h1");
 			empty.textContent = "There's nothing here, Create a new task!";
-			// empty.setAttribute("id", "addProjectBtn");
-			// empty.textContent = "+";
 			taskSection.append(empty);
 		} else {
 			tasks.forEach((element) => {
@@ -91,12 +119,27 @@ const view = () => {
 			handler(event);
 		});
 
-		closeButton.addEventListener("click", (event) => {
+		projCloseButton.addEventListener("click", (event) => {
+			handler(event);
+		});
+
+		taskCloseButton.addEventListener("click", (event) => {
+			handler(event);
+		});
+
+		addTaskBtn.addEventListener("click", (event) => {
 			handler(event);
 		});
 	}
 
-	return { showModal, updateTasks, bindClick, bindTitleSubmit, updateProjects };
+	return {
+		showModal,
+		updateTasks,
+		bindClick,
+		bindTitleSubmit,
+		bindTaskSubmit,
+		updateProjects,
+	};
 };
 
 export default view;

@@ -21,9 +21,15 @@ const controller = (() => {
 		model.addProject(0, projectTitle);
 	};
 
+	const handleAddTask = (task) => {
+		model.addTask(task);
+	};
+
 	const handleClick = (event) => {
 		const { target } = event;
+
 		if (target.classList.contains("project")) {
+			model.setCurrentProject(target.getAttribute("data-project-id"));
 			viewable.updateTasks(
 				model.getProjectTasks(target.getAttribute("data-project-id"))
 			);
@@ -31,9 +37,16 @@ const controller = (() => {
 
 		if (
 			target.getAttribute("id") === "addProjectBtn" ||
-			target.getAttribute("id") === "closeButton"
+			target.getAttribute("id") === "projCloseButton"
 		) {
-			viewable.showModal();
+			viewable.showModal(".projModalBg");
+		}
+
+		if (
+			target.getAttribute("id") === "addTaskBtn" ||
+			target.getAttribute("id") === "taskCloseButton"
+		) {
+			viewable.showModal(".taskModalBg");
 		}
 
 		if (target.getAttribute("id") === "projDel") {
@@ -45,6 +58,11 @@ const controller = (() => {
 		viewable.updateProjects(data);
 	});
 
+	PubSub.subscribe("tasksUpdated", (msg, data) => {
+		viewable.updateTasks(data);
+	});
+
 	viewable.bindClick(handleClick);
 	viewable.bindTitleSubmit(handleAddProject);
+	viewable.bindTaskSubmit(handleAddTask);
 })(model, view);

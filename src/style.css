@@ -39,59 +39,71 @@ header {
 	height: 60px;
 }
 
-.modal {
+.projModalBg,
+.taskModalBg {
 	display: none;
-	z-index: 1;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	width: 100%;
 	position: fixed;
-	top: 50%;
-	left: 50%;
+	background-color: rgba(199, 199, 199, 0.61);
+	backdrop-filter: blur(5px);
+}
+.modal {
+	z-index: 1;
 	border-radius: 5px;
-	transform: translate(-50%, -50%);
 	background-color: var(--off-white);
 	filter: drop-shadow(0px 2px 5px #0000005b);
-	width: 20%;
-	height: 25%;
+	width: 25%;
+	height: max-content;
 }
-
-.modal header {
-	height: 40px;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-}
-
-form {
-	height: 80%;
+#projectForm,
+#taskForm {
 	font-size: 1.25rem;
 	list-style: none;
-	padding: 10px;
-	/* border: red solid; */
 }
-
-form ul li {
+#taskForm ul li header,
+#projectForm ul li header {
+	height: 40px;
+	width: 100%;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	padding: 10px;
+}
+#taskForm ul li,
+#taskForm,
+#taskForm ul,
+#projectForm ul li,
+#projectForm,
+#projectForm ul {
+	height: 100%;
+}
+#taskForm ul li,
+#projectForm ul li {
 	display: flex;
 	flex-direction: column;
-	gap: 20px;
+	gap: 30px;
 	align-items: center;
+	padding: 0px 10px 10px 10px;
+}
+#taskForm label,
+#projectForm label {
+	width: 90%;
 }
 
-label,
 label input {
-	width: 98%;
+	width: 100%;
+	padding: 5px;
+	margin-top: 5px;
+	border-radius: 5px;
+	border: 2px solid rgba(0, 0, 0, 0.199);
 }
-
-label input {
-	height: 30px;
-}
-
 #mainContent {
 	display: flex;
 	flex: 1;
 	overflow: auto;
 }
-/* #tasks,
-#taskList {
-	border: red solid;
-} */
 
 #tasks {
 	display: flex;
@@ -159,6 +171,5 @@ label input {
 @media only screen and (max-width: 600px) {
 	.modal {
 		width: 90%;
-		height: 28%;
 	}
 }
