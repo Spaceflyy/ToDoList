@@ -8,21 +8,43 @@
 	<script defer src="main.js"></script></head>
 	<body>
 		<header><h1>To Do List</h1></header>
-		<div class="modal">
-			<header><h2>Add Project</h2></header>
+		<div class="projModalBg">
+			<div class="modal">
+				<form id="projectForm">
+					<ul>
+						<li>
+							<header><h2>Add Project</h2></header>
+							<label>Title<input required type="text" id="titleInput" /></label>
+							<div class="line"></div>
+							<div class="buttonContainer">
+								<button id="projCloseButton" type="button">Cancel</button
+								><input id="projectSubmit" type="submit" />
+							</div>
+						</li>
+					</ul>
+				</form>
+			</div>
+		</div>
 
-			<form id="projectForm">
-				<ul>
-					<li>
-						<label>Title<input required="" type="text" id="titleInput" /></label>
-						<div class="line"></div>
-						<div class="buttonContainer">
-							<button id="closeButton" type="button">Cancel</button
-							><input type="submit" />
-						</div>
-					</li>
-				</ul>
-			</form>
+		<div class="taskModalBg">
+			<div class="modal">
+				<form id="taskForm">
+					<ul>
+						<li>
+							<header><h2>Add Task</h2></header>
+							<label>Title<input required type="text" id="taskTitleInput" /></label>
+							<label>Description<input type="text" id="descInput" /></label>
+							<label>Due Date<input required type="date" id="dueInput" /></label>
+							<label>Priority<input required type="text" id="priInput" /></label>
+							<div class="line"></div>
+							<div class="buttonContainer">
+								<button id="taskCloseButton" type="button">Cancel</button
+								><input id="taskSubmit" type="submit" />
+							</div>
+						</li>
+					</ul>
+				</form>
+			</div>
 		</div>
 
 		<div id="mainContent">
@@ -38,10 +60,10 @@
 			</div>
 			<div id="tasks">
 				<div id="taskContainer">
-					<h2>Task Title</h2>
+					<h2></h2>
 					<div id="taskList"></div>
 					<div class="line"></div>
-					<button type="button">Add Task</button>
+					<button id="addTaskBtn" type="button">Add Task</button>
 				</div>
 			</div>
 		</div>
