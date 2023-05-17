@@ -90,18 +90,18 @@ const view = () => {
 		}
 	};
 
-	const updateTasks = (projTitle, tasks) => {
+	const updateTasks = (proj) => {
 		while (taskSection.firstChild) {
 			taskSection.removeChild(taskSection.firstChild);
 		}
 		const title = document.querySelector("#taskContainer h2");
-		title.textContent = projTitle;
-		if (tasks.length === 0) {
+		title.textContent = proj.title;
+		if (proj.taskList.length === 0) {
 			const empty = document.createElement("h3");
 			empty.textContent = "There's nothing here, Create a new task!";
 			taskSection.append(empty);
 		} else {
-			tasks.forEach((element) => {
+			proj.taskList.forEach((element) => {
 				const task = document.createElement("li");
 				const check = document.createElement("input");
 				check.setAttribute("type", "checkbox");
