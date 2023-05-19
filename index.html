@@ -33,9 +33,17 @@
 						<li>
 							<header><h2>Add Task</h2></header>
 							<label>Title<input required type="text" id="taskTitleInput" /></label>
-							<label>Description<input type="text" id="descInput" /></label>
+							<label
+								>Description <textarea rows="6" cols="50" id="descInput"></textarea>
+							</label>
 							<label>Due Date<input required type="date" id="dueInput" /></label>
-							<label>Priority<input required type="text" id="priInput" /></label>
+							<label
+								>Priority<select name="priority" id="priInput">
+									<option value="Low">Low</option>
+									<option value="Medium">Medium</option>
+									<option value="High">High</option>
+								</select></label
+							>
 							<div class="line"></div>
 							<div class="buttonContainer">
 								<button id="taskCloseButton" type="button">Cancel</button
@@ -61,6 +69,15 @@
 			<div id="tasks">
 				<div id="taskContainer">
 					<h2></h2>
+					<div id="subtitle">
+						<h3>Completed</h3>
+						<h3>Task Title</h3>
+						<h3>Task Description</h3>
+						<h3>Due Date</h3>
+						<h3>Priority</h3>
+						<h3>Modify</h3>
+					</div>
+					<div class="line"></div>
 					<div id="taskList"></div>
 					<div class="line"></div>
 					<button id="addTaskBtn" type="button">Add Task</button>
