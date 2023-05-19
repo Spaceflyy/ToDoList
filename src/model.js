@@ -13,7 +13,11 @@ const model = () => {
 		{
 			id: 1,
 			title: "Test Project 2",
-			taskList: [],
+			taskList: [
+				{ id: 0, title: "Test Task1", desc: "Test desc" },
+				{ id: 0, title: "Test Task1", desc: "Test desc" },
+				{ id: 0, title: "Test Task1", desc: "Test desc" },
+			],
 		},
 	];
 
@@ -54,9 +58,9 @@ const model = () => {
 
 	const addTask = (freshTask) => {
 		const id =
-			projectsList[currentProject].taskList.length > 0
-				? projectsList[currentProject].taskList[
-						projectsList[currentProject].taskList.length - 1
+			projectsList[getCurrentProject()].taskList.length > 0
+				? projectsList[getCurrentProject()].taskList[
+						projectsList[getCurrentProject()].taskList.length - 1
 				  ].id + 1
 				: 0;
 
@@ -67,9 +71,9 @@ const model = () => {
 			freshTask[2],
 			freshTask[3]
 		);
-		projectsList[currentProject].taskList.push(newTask);
+		projectsList[getCurrentProject()].taskList.push(newTask);
 
-		PubSub.publish("tasksUpdated", projectsList[currentProject]);
+		PubSub.publish("tasksUpdated", projectsList[getCurrentProject()]);
 	};
 
 	const deleteProject = (id) => {
@@ -80,6 +84,16 @@ const model = () => {
 		PubSub.publish("ListUpdated", projectsList);
 	};
 
+	const deleteTask = (id) => {
+		const index = projectsList[getCurrentProject()].taskList.findIndex(
+			(taskid) => {
+				return taskid.id === Number(id);
+			}
+		);
+		projectsList[getCurrentProject()].taskList.splice(index, 1);
+		PubSub.publish("tasksUpdated", projectsList[getCurrentProject()]);
+	};
+
 	return {
 		getCurrentProject,
 		projectsList,
@@ -88,6 +102,7 @@ const model = () => {
 		addTask,
 		deleteProject,
 		setCurrentProject,
+		deleteTask,
 	};
 };
 

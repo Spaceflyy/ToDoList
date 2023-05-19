@@ -4,7 +4,7 @@ import del from "./icons/delete.svg";
 import edt from "./icons/edit.svg";
 
 const view = () => {
-	const root = document.getElementById("sidebar");
+	const root = document.getElementById("mainContent");
 	const projectform = document.getElementById("projectForm");
 	const taskForm = document.getElementById("taskForm");
 	const titleInput = document.getElementById("titleInput");
@@ -59,7 +59,7 @@ const view = () => {
 		taskForm.addEventListener("submit", (event) => {
 			event.preventDefault();
 			handler(getTaskInfo());
-			// taskForm.reset();
+			taskForm.reset();
 		});
 	};
 
@@ -82,7 +82,7 @@ const view = () => {
 				proj.classList.add("project");
 				proj.setAttribute("data-project-id", element.id);
 				proj.textContent = element.title;
-				proj.append(createImg("editIcon", edt));
+				proj.append(createImg("editIcon", edt, "projEdt"));
 				proj.append(createImg("delIcon", del, "projDel"));
 				projectList.append(proj);
 				projectList.append(addProjBtn);
@@ -94,6 +94,7 @@ const view = () => {
 		while (taskSection.firstChild) {
 			taskSection.removeChild(taskSection.firstChild);
 		}
+
 		const title = document.querySelector("#taskContainer h2");
 		title.textContent = proj.title;
 		if (proj.taskList.length === 0) {
@@ -104,13 +105,25 @@ const view = () => {
 			proj.taskList.forEach((element) => {
 				const task = document.createElement("li");
 				const check = document.createElement("input");
+				const Tastitle = document.createElement("p");
+				const description = document.createElement("p");
+				const date = document.createElement("p");
+				const pri = document.createElement("p");
+				Tastitle.innerText = element.title;
+				description.innerText = element.desc;
+				date.innerText = element.dueDate;
+				pri.innerText = element.priority;
+
 				check.setAttribute("type", "checkbox");
 				task.classList.add("task");
-				task.setAttribute("data-project-id", element.id);
+				task.setAttribute("data-task-id", element.id);
 				task.append(check);
-				task.append(
-					element.title + element.desc + element.dueDate + element.priority
-				);
+				task.append(Tastitle);
+				task.append(description);
+				task.append(date);
+				task.append(pri);
+				task.append(createImg("editIcon", edt, "taskEdt"));
+				task.append(createImg("delIcon", del, "taskDel"));
 				taskSection.append(task);
 			});
 		}
@@ -126,10 +139,6 @@ const view = () => {
 		});
 
 		taskCloseButton.addEventListener("click", (event) => {
-			handler(event);
-		});
-
-		addTaskBtn.addEventListener("click", (event) => {
 			handler(event);
 		});
 	}

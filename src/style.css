@@ -91,7 +91,8 @@ header {
 #projectForm label {
 	width: 90%;
 }
-
+label textarea,
+label select,
 label input {
 	width: 100%;
 	padding: 5px;
@@ -99,6 +100,16 @@ label input {
 	border-radius: 5px;
 	border: 2px solid rgba(0, 0, 0, 0.199);
 }
+
+label select {
+	width: 103%;
+	background-color: white;
+}
+
+label textarea {
+	resize: none;
+}
+
 #mainContent {
 	display: flex;
 	flex: 1;
@@ -113,6 +124,26 @@ label input {
 
 #taskContainer {
 	width: 70%;
+}
+
+.task,
+#subtitle {
+	display: grid;
+	grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr;
+	justify-items: center;
+	align-items: center;
+	grid-auto-flow: column;
+	padding-right: 20px;
+	gap: 10px;
+}
+
+.task input[type="checkbox"] {
+	width: 20px;
+	height: auto;
+}
+
+img {
+	cursor: pointer;
 }
 
 #sidebar {
