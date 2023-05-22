@@ -5,32 +5,63 @@ import edt from "./icons/edit.svg";
 
 const view = () => {
 	const root = document.getElementById("mainContent");
-	const projectform = document.getElementById("projectForm");
+	const projectForm = document.getElementById("projectForm");
 	const taskForm = document.getElementById("taskForm");
 	const titleInput = document.getElementById("titleInput");
 	const taskSection = document.getElementById("taskList");
 	const projectList = document.getElementById("projectList");
 	const projCloseButton = document.getElementById("projCloseButton");
 	const taskCloseButton = document.getElementById("taskCloseButton");
-	const addTaskBtn = document.getElementById("addTaskBtn");
 	const taskTitleInput = document.getElementById("taskTitleInput");
 	const taskDescInput = document.getElementById("descInput");
 	const taskDateInput = document.getElementById("dueInput");
 	const taskPriInput = document.getElementById("priInput");
+	const addTaskBtn = document.getElementById("addTaskBtn");
 
-	const createImg = (name, image, idName) => {
+	const createImg = (name, image, idName, className) => {
 		name = new Image();
 		name.src = image;
 		name.setAttribute("id", idName);
+		if (className !== undefined) {
+			name.classList.add(className);
+		}
 		return name;
 	};
 
-	const showModal = (thisModal) => {
-		const modal = document.querySelector(thisModal);
-
+	const showModal = (data, form) => {
+		const modal = document.querySelector(".projModalBg");
+		const taskEditBtn = document.getElementById("taskEdit");
+		const taskAddBtn = document.getElementById("taskSubmit");
+		const title = document.querySelector("#modalTitle");
 		modal.style.display === "flex"
 			? (modal.style.display = "none")
 			: (modal.style.display = "flex");
+
+		if (form === "projectForm") {
+			projectForm.style.display = "block";
+			taskForm.style.display = "none";
+		}
+
+		if (form === "taskForm") {
+			taskForm.reset();
+			title.textContent = "Add Task";
+			projectForm.style.display = "none";
+			taskForm.style.display = "block";
+			taskEditBtn.style.display = "none";
+			taskAddBtn.style.display = "block";
+		}
+
+		if (form === "taskEdit") {
+			taskTitleInput.value = data.title;
+			taskDescInput.value = data.desc;
+			taskDateInput.value = data.dueDate;
+			taskPriInput.value = data.priority;
+			title.textContent = "Edit Task";
+			projectForm.style.display = "none";
+			taskForm.style.display = "block";
+			taskEditBtn.style.display = "block";
+			taskAddBtn.style.display = "none";
+		}
 	};
 
 	const getTitleText = () => {
@@ -45,22 +76,6 @@ const view = () => {
 			taskPriInput.value,
 		];
 		return task;
-	};
-
-	const bindTitleSubmit = (handler) => {
-		projectform.addEventListener("submit", (event) => {
-			event.preventDefault();
-			handler(getTitleText());
-			projectform.reset();
-		});
-	};
-
-	const bindTaskSubmit = (handler) => {
-		taskForm.addEventListener("submit", (event) => {
-			event.preventDefault();
-			handler(getTaskInfo());
-			taskForm.reset();
-		});
 	};
 
 	const updateProjects = (projects) => {
@@ -82,34 +97,57 @@ const view = () => {
 				proj.classList.add("project");
 				proj.setAttribute("data-project-id", element.id);
 				proj.textContent = element.title;
-				proj.append(createImg("editIcon", edt, "projEdt"));
-				proj.append(createImg("delIcon", del, "projDel"));
+				proj.append(createImg("editIcon", edt, "projEdt", "icon"));
+				proj.append(createImg("delIcon", del, "projDel", "icon"));
+
 				projectList.append(proj);
 				projectList.append(addProjBtn);
 			});
 		}
 	};
 
+	const setActiveProject = (currentProj) => {
+		const taskList = document.querySelectorAll(".project");
+
+		taskList.forEach((project) => {
+			project.classList.remove("active");
+			if (currentProj === Number(project.getAttribute("data-project-id"))) {
+				project.classList.add("active");
+			}
+		});
+	};
+
 	const updateTasks = (proj) => {
+		const title = document.querySelector("#taskContainer h2");
+		const empty = document.createElement("h3");
 		while (taskSection.firstChild) {
 			taskSection.removeChild(taskSection.firstChild);
 		}
 
-		const title = document.querySelector("#taskContainer h2");
-		title.textContent = proj.title;
+		if (proj === undefined) {
+			title.textContent = "Please select a project to view tasks";
+			empty.textContent = "Please select a project to view tasks";
+			taskSection.append(empty);
+			addTaskBtn.style.display = "none";
+			return;
+		}
+
 		if (proj.taskList.length === 0) {
-			const empty = document.createElement("h3");
+			title.textContent = proj.title;
 			empty.textContent = "There's nothing here, Create a new task!";
 			taskSection.append(empty);
-		} else {
+		}
+
+		if (proj.taskList.length > 0) {
+			title.textContent = proj.title;
 			proj.taskList.forEach((element) => {
 				const task = document.createElement("li");
 				const check = document.createElement("input");
-				const Tastitle = document.createElement("p");
+				const Tasktitle = document.createElement("p");
 				const description = document.createElement("p");
 				const date = document.createElement("p");
 				const pri = document.createElement("p");
-				Tastitle.innerText = element.title;
+				Tasktitle.innerText = element.title;
 				description.innerText = element.desc;
 				date.innerText = element.dueDate;
 				pri.innerText = element.priority;
@@ -118,15 +156,31 @@ const view = () => {
 				task.classList.add("task");
 				task.setAttribute("data-task-id", element.id);
 				task.append(check);
-				task.append(Tastitle);
+				task.append(Tasktitle);
 				task.append(description);
 				task.append(date);
 				task.append(pri);
-				task.append(createImg("editIcon", edt, "taskEdt"));
-				task.append(createImg("delIcon", del, "taskDel"));
+				task.append(createImg("editIcon", edt, "taskEdt", "icon"));
+				task.append(createImg("delIcon", del, "taskDel", "icon"));
 				taskSection.append(task);
 			});
 		}
+	};
+
+	const bindTitleSubmit = (handler) => {
+		projectForm.addEventListener("submit", (event) => {
+			event.preventDefault();
+			handler(getTitleText());
+			projectForm.reset();
+		});
+	};
+
+	const bindTaskSubmit = (handler) => {
+		taskForm.addEventListener("submit", (event) => {
+			event.preventDefault();
+			handler(getTaskInfo());
+			taskForm.reset();
+		});
 	};
 
 	function bindClick(handler) {
@@ -150,6 +204,7 @@ const view = () => {
 		bindTitleSubmit,
 		bindTaskSubmit,
 		updateProjects,
+		setActiveProject,
 	};
 };
 

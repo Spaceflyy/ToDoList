@@ -17,6 +17,8 @@ const controller = (() => {
 
 	viewable.updateProjects(model.projectsList);
 	viewable.updateTasks(model.projectsList[model.getCurrentProject()]);
+	viewable.setActiveProject(model.getCurrentProject());
+
 	const handleAddProject = (projectTitle) => {
 		model.addProject(0, projectTitle);
 	};
@@ -27,25 +29,32 @@ const controller = (() => {
 
 	const handleClick = (event) => {
 		const { target } = event;
-		console.log(event.target);
 		if (target.classList.contains("project")) {
 			model.setCurrentProject(target.getAttribute("data-project-id"));
+			viewable.setActiveProject(model.getCurrentProject());
 			viewable.updateTasks(model.projectsList[model.getCurrentProject()]);
+		}
+		if (target.getAttribute("id") === "taskEdt") {
+			viewable.showModal(
+				model.projectsList[model.getCurrentProject()].taskList[
+					target.parentElement.getAttribute("data-task-id")
+				],
+				"taskEdit"
+			);
 		}
 
 		if (
 			target.getAttribute("id") === "addProjectBtn" ||
 			target.getAttribute("id") === "projCloseButton"
 		) {
-			viewable.showModal(".projModalBg");
+			viewable.showModal("", "projectForm");
 		}
 
 		if (
 			target.getAttribute("id") === "addTaskBtn" ||
 			target.getAttribute("id") === "taskCloseButton"
 		) {
-			console.log("bang");
-			viewable.showModal(".taskModalBg");
+			viewable.showModal("", "taskForm");
 		}
 
 		if (target.getAttribute("id") === "projDel") {
@@ -59,10 +68,12 @@ const controller = (() => {
 
 	PubSub.subscribe("ListUpdated", (msg, data) => {
 		viewable.updateProjects(data);
+		viewable.setActiveProject(model.getCurrentProject());
 	});
 
 	PubSub.subscribe("tasksUpdated", (msg, data) => {
 		viewable.updateTasks(data);
+		viewable.setActiveProject(model.getCurrentProject());
 	});
 
 	viewable.bindClick(handleClick);

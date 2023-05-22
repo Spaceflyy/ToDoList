@@ -25,8 +25,8 @@ const model = () => {
 		return { id, title, taskList };
 	};
 
-	const task = (id, title, desc, dueDate, priority) => {
-		return { id, title, desc, dueDate, priority };
+	const task = (id, title, desc, dueDate, priority, completed = false) => {
+		return { id, title, desc, dueDate, priority, completed };
 	};
 
 	const setCurrentProject = (projId) => {
@@ -47,13 +47,9 @@ const model = () => {
 
 		const newProject = project(id, title, taskList);
 		projectsList.push(newProject);
+		currentProject = projectsList.length - 1;
+		PubSub.publish("tasksUpdated", projectsList[getCurrentProject()]);
 		PubSub.publish("ListUpdated", projectsList);
-	};
-	const getProjectTasks = (projId) => {
-		const index = projectsList.findIndex((proj) => {
-			return proj.id === Number(projId);
-		});
-		return projectsList[index].taskList;
 	};
 
 	const addTask = (freshTask) => {
@@ -81,7 +77,9 @@ const model = () => {
 			return proj.id === Number(id);
 		});
 		projectsList.splice(index, 1);
+		currentProject -= 1;
 		PubSub.publish("ListUpdated", projectsList);
+		PubSub.publish("tasksUpdated", projectsList[getCurrentProject()]);
 	};
 
 	const deleteTask = (id) => {
@@ -90,6 +88,7 @@ const model = () => {
 				return taskid.id === Number(id);
 			}
 		);
+
 		projectsList[getCurrentProject()].taskList.splice(index, 1);
 		PubSub.publish("tasksUpdated", projectsList[getCurrentProject()]);
 	};
@@ -98,7 +97,7 @@ const model = () => {
 		getCurrentProject,
 		projectsList,
 		addProject,
-		getProjectTasks,
+
 		addTask,
 		deleteProject,
 		setCurrentProject,
