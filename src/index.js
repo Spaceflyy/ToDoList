@@ -27,8 +27,13 @@ const controller = (() => {
 		model.addTask(task);
 	};
 
+	const handleEditTask = (updateTask) => {
+		model.updateTask(updateTask);
+	};
+
 	const handleClick = (event) => {
 		const { target } = event;
+
 		if (target.classList.contains("project")) {
 			model.setCurrentProject(target.getAttribute("data-project-id"));
 			viewable.setActiveProject(model.getCurrentProject());
@@ -75,7 +80,7 @@ const controller = (() => {
 		viewable.updateTasks(data);
 		viewable.setActiveProject(model.getCurrentProject());
 	});
-
+	viewable.bindTaskEdit(handleEditTask);
 	viewable.bindClick(handleClick);
 	viewable.bindTitleSubmit(handleAddProject);
 	viewable.bindTaskSubmit(handleAddTask);

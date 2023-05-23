@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-expressions */
+import { format } from "date-fns";
 import del from "./icons/delete.svg";
 import edt from "./icons/edit.svg";
 
@@ -17,6 +18,7 @@ const view = () => {
 	const taskDateInput = document.getElementById("dueInput");
 	const taskPriInput = document.getElementById("priInput");
 	const addTaskBtn = document.getElementById("addTaskBtn");
+	const taskEditBtn = document.getElementById("taskEdit");
 
 	const createImg = (name, image, idName, className) => {
 		name = new Image();
@@ -30,7 +32,6 @@ const view = () => {
 
 	const showModal = (data, form) => {
 		const modal = document.querySelector(".projModalBg");
-		const taskEditBtn = document.getElementById("taskEdit");
 		const taskAddBtn = document.getElementById("taskSubmit");
 		const title = document.querySelector("#modalTitle");
 		modal.style.display === "flex"
@@ -44,6 +45,7 @@ const view = () => {
 
 		if (form === "taskForm") {
 			taskForm.reset();
+
 			title.textContent = "Add Task";
 			projectForm.style.display = "none";
 			taskForm.style.display = "block";
@@ -148,8 +150,9 @@ const view = () => {
 				const date = document.createElement("p");
 				const pri = document.createElement("p");
 				Tasktitle.innerText = element.title;
+
 				description.innerText = element.desc;
-				date.innerText = element.dueDate;
+				date.innerText = format(new Date(element.dueDate), "dd/MM/yyyy");
 				pri.innerText = element.priority;
 
 				check.setAttribute("type", "checkbox");
@@ -172,6 +175,13 @@ const view = () => {
 			event.preventDefault();
 			handler(getTitleText());
 			projectForm.reset();
+		});
+	};
+
+	const bindTaskEdit = (handler) => {
+		taskEditBtn.addEventListener("click", () => {
+			handler(getTaskInfo());
+			taskForm.reset();
 		});
 	};
 
@@ -205,6 +215,7 @@ const view = () => {
 		bindTaskSubmit,
 		updateProjects,
 		setActiveProject,
+		bindTaskEdit,
 	};
 };
 

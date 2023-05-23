@@ -8,16 +8,20 @@ const model = () => {
 		{
 			id: 0,
 			title: "Test Project 1",
-			taskList: [{ id: 0, title: "Test Task1", desc: "Test desc" }],
+			taskList: [
+				{
+					id: 0,
+					title: "Test Task1",
+					desc: "Test desc",
+					dueDate: "2023-05-06",
+					priority: "High",
+				},
+			],
 		},
 		{
 			id: 1,
 			title: "Test Project 2",
-			taskList: [
-				{ id: 0, title: "Test Task1", desc: "Test desc" },
-				{ id: 0, title: "Test Task1", desc: "Test desc" },
-				{ id: 0, title: "Test Task1", desc: "Test desc" },
-			],
+			taskList: [],
 		},
 	];
 
@@ -93,11 +97,23 @@ const model = () => {
 		PubSub.publish("tasksUpdated", projectsList[getCurrentProject()]);
 	};
 
+	const updateTask = (updatedTask) => {
+		const currentProjTasks = projectsList[currentProject].taskList;
+		const [newTitle, newDesc, newDate, newPri] = updatedTask;
+
+		currentProjTasks[0].title = newTitle;
+		currentProjTasks[0].desc = newDesc;
+		currentProjTasks[0].dueDate = newDate;
+		currentProjTasks[0].priority = newPri;
+
+		PubSub.publish("tasksUpdated", projectsList[getCurrentProject()]);
+	};
+
 	return {
 		getCurrentProject,
 		projectsList,
 		addProject,
-
+		updateTask,
 		addTask,
 		deleteProject,
 		setCurrentProject,

@@ -10,7 +10,7 @@
 		<header><h1>To Do List</h1></header>
 		<div class="projModalBg">
 			<div class="modal">
-				<form id="taskForm">
+				<form method="post" id="taskForm">
 					<ul>
 						<li>
 							<header><h2 id="modalTitle"></h2></header>
@@ -29,13 +29,25 @@
 							<div class="line"></div>
 							<div class="buttonContainer">
 								<button id="taskCloseButton" type="button">Cancel</button
-								><input id="taskSubmit" value="Add Task" type="submit" />
-								<input id="taskEdit" value="Edit" type="submit" />
+								><input
+									for="taskForm"
+									name="button 1"
+									id="taskSubmit"
+									value="Add Task"
+									type="submit"
+								/>
+								<input
+									for="taskForm"
+									name="button 2"
+									id="taskEdit"
+									value="Edit"
+									type="submit"
+								/>
 							</div>
 						</li>
 					</ul>
 				</form>
-				<form id="projectForm">
+				<form method="post" id="projectForm">
 					<ul>
 						<li>
 							<header><h2>Add Project</h2></header>
@@ -43,7 +55,7 @@
 							<div class="line"></div>
 							<div class="buttonContainer">
 								<button id="projCloseButton" type="button">Cancel</button
-								><input id="projectSubmit" type="submit" />
+								><input for="projectForm" id="projectSubmit" type="submit" />
 							</div>
 						</li>
 					</ul>
