@@ -30,7 +30,9 @@ const controller = (() => {
 	const handleEditTask = (updateTask) => {
 		model.updateTask(updateTask);
 	};
-
+	const handleEditProject = (newTitle) => {
+		model.updateProject(viewable.getProjToEdit(), newTitle);
+	};
 	const handleClick = (event) => {
 		const { target } = event;
 
@@ -46,6 +48,11 @@ const controller = (() => {
 				],
 				"taskEdit"
 			);
+		}
+
+		if (target.getAttribute("id") === "projEdt") {
+			const clickedProject = target.parentElement.getAttribute("data-project-id");
+			viewable.showModal(model.projectsList[clickedProject], "projEdit");
 		}
 
 		if (
@@ -80,6 +87,7 @@ const controller = (() => {
 		viewable.updateTasks(data);
 		viewable.setActiveProject(model.getCurrentProject());
 	});
+	viewable.bindProjectEdit(handleEditProject);
 	viewable.bindTaskEdit(handleEditTask);
 	viewable.bindClick(handleClick);
 	viewable.bindTitleSubmit(handleAddProject);

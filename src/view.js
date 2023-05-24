@@ -4,6 +4,8 @@ import { format } from "date-fns";
 import del from "./icons/delete.svg";
 import edt from "./icons/edit.svg";
 
+let projToEdit;
+
 const view = () => {
 	const root = document.getElementById("mainContent");
 	const projectForm = document.getElementById("projectForm");
@@ -19,6 +21,8 @@ const view = () => {
 	const taskPriInput = document.getElementById("priInput");
 	const addTaskBtn = document.getElementById("addTaskBtn");
 	const taskEditBtn = document.getElementById("taskEdit");
+	const projectSubmitBtn = document.getElementById("projectSubmit");
+	const projectEditBtn = document.getElementById("projectEdit");
 
 	const createImg = (name, image, idName, className) => {
 		name = new Image();
@@ -30,22 +34,27 @@ const view = () => {
 		return name;
 	};
 
-	const showModal = (data, form) => {
+	const showModal = (data, formToShow) => {
 		const modal = document.querySelector(".projModalBg");
 		const taskAddBtn = document.getElementById("taskSubmit");
 		const title = document.querySelector("#modalTitle");
+		const projModalTitle = document.querySelector("#projModalTitle");
+
 		modal.style.display === "flex"
 			? (modal.style.display = "none")
 			: (modal.style.display = "flex");
 
-		if (form === "projectForm") {
+		if (formToShow === "projectForm") {
+			projectForm.reset();
+			projModalTitle.textContent = "Add Project";
 			projectForm.style.display = "block";
 			taskForm.style.display = "none";
+			projectSubmitBtn.style.display = "block";
+			projectEditBtn.style.display = "none";
 		}
 
-		if (form === "taskForm") {
+		if (formToShow === "taskForm") {
 			taskForm.reset();
-
 			title.textContent = "Add Task";
 			projectForm.style.display = "none";
 			taskForm.style.display = "block";
@@ -53,7 +62,7 @@ const view = () => {
 			taskAddBtn.style.display = "block";
 		}
 
-		if (form === "taskEdit") {
+		if (formToShow === "taskEdit") {
 			taskTitleInput.value = data.title;
 			taskDescInput.value = data.desc;
 			taskDateInput.value = data.dueDate;
@@ -64,6 +73,20 @@ const view = () => {
 			taskEditBtn.style.display = "block";
 			taskAddBtn.style.display = "none";
 		}
+
+		if (formToShow === "projEdit") {
+			projModalTitle.textContent = "Edit Project";
+			projectForm.style.display = "block";
+			taskForm.style.display = "none";
+			titleInput.value = data.title;
+			projToEdit = data.id;
+			projectSubmitBtn.style.display = "none";
+			projectEditBtn.style.display = "block";
+		}
+	};
+
+	const getProjToEdit = () => {
+		return projToEdit;
 	};
 
 	const getTitleText = () => {
@@ -182,6 +205,14 @@ const view = () => {
 		taskEditBtn.addEventListener("click", () => {
 			handler(getTaskInfo());
 			taskForm.reset();
+			showModal("", "projEdit");
+		});
+	};
+
+	const bindProjectEdit = (handler) => {
+		projectEditBtn.addEventListener("click", () => {
+			handler(getTitleText());
+			// showModal("", "projectForm");
 		});
 	};
 
@@ -216,6 +247,8 @@ const view = () => {
 		updateProjects,
 		setActiveProject,
 		bindTaskEdit,
+		bindProjectEdit,
+		getProjToEdit,
 	};
 };
 

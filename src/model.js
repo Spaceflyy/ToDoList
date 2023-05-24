@@ -109,6 +109,11 @@ const model = () => {
 		PubSub.publish("tasksUpdated", projectsList[getCurrentProject()]);
 	};
 
+	const updateProject = (id, newtitle) => {
+		projectsList[id].title = newtitle;
+		PubSub.publish("ListUpdated", projectsList);
+	};
+
 	return {
 		getCurrentProject,
 		projectsList,
@@ -118,6 +123,7 @@ const model = () => {
 		deleteProject,
 		setCurrentProject,
 		deleteTask,
+		updateProject,
 	};
 };
 

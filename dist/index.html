@@ -29,20 +29,8 @@
 							<div class="line"></div>
 							<div class="buttonContainer">
 								<button id="taskCloseButton" type="button">Cancel</button
-								><input
-									for="taskForm"
-									name="button 1"
-									id="taskSubmit"
-									value="Add Task"
-									type="submit"
-								/>
-								<input
-									for="taskForm"
-									name="button 2"
-									id="taskEdit"
-									value="Edit"
-									type="submit"
-								/>
+								><input for="taskForm" id="taskSubmit" value="Add Task" type="submit" />
+								<button for="taskForm" id="taskEdit" type="button">Edit Task</button>
 							</div>
 						</li>
 					</ul>
@@ -50,12 +38,20 @@
 				<form method="post" id="projectForm">
 					<ul>
 						<li>
-							<header><h2>Add Project</h2></header>
+							<header><h2 id="projModalTitle">Add Project</h2></header>
 							<label>Title<input required type="text" id="titleInput" /></label>
 							<div class="line"></div>
 							<div class="buttonContainer">
 								<button id="projCloseButton" type="button">Cancel</button
-								><input for="projectForm" id="projectSubmit" type="submit" />
+								><input
+									for="projectForm"
+									id="projectSubmit"
+									value="Add Project"
+									type="submit"
+								/>
+								<button for="projectForm" id="projectEdit" type="button">
+									Edit Project
+								</button>
 							</div>
 						</li>
 					</ul>
