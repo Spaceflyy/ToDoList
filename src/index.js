@@ -16,8 +16,8 @@ const controller = (() => {
 	const viewable = view();
 
 	viewable.updateProjects(model.projectsList);
-	viewable.updateTasks(model.projectsList[model.getCurrentProject()]);
-	viewable.setActiveProject(model.getCurrentProject());
+	viewable.updateTasks(model.projectsList[model.getCurrentProject()].taskList);
+	viewable.setActiveProject(model.getClickedProject(model.getCurrentProject()));
 
 	const handleAddProject = (projectTitle) => {
 		model.addProject(0, projectTitle);
@@ -38,8 +38,10 @@ const controller = (() => {
 
 		if (target.classList.contains("project")) {
 			model.setCurrentProject(target.getAttribute("data-project-id"));
-			viewable.setActiveProject(model.getCurrentProject());
-			viewable.updateTasks(model.projectsList[model.getCurrentProject()]);
+			viewable.setActiveProject(
+				model.getClickedProject(target.getAttribute("data-project-id"))
+			);
+			viewable.updateTasks(model.projectsList[model.getCurrentProject()].taskList);
 		}
 		if (target.getAttribute("id") === "taskEdt") {
 			viewable.showModal(
@@ -80,12 +82,12 @@ const controller = (() => {
 
 	PubSub.subscribe("ListUpdated", (msg, data) => {
 		viewable.updateProjects(data);
-		viewable.setActiveProject(model.getCurrentProject());
+		viewable.setActiveProject(model.getClickedProject(model.getCurrentProject()));
 	});
 
 	PubSub.subscribe("tasksUpdated", (msg, data) => {
 		viewable.updateTasks(data);
-		viewable.setActiveProject(model.getCurrentProject());
+		// viewable.setActiveProject(model.getClickedProject(model.getCurrentProject()));
 	});
 	viewable.bindProjectEdit(handleEditProject);
 	viewable.bindTaskEdit(handleEditTask);

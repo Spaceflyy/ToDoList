@@ -23,6 +23,7 @@ const view = () => {
 	const taskEditBtn = document.getElementById("taskEdit");
 	const projectSubmitBtn = document.getElementById("projectSubmit");
 	const projectEditBtn = document.getElementById("projectEdit");
+	const taskSectionTitle = document.querySelector("#taskContainer h2");
 
 	const createImg = (name, image, idName, className) => {
 		name = new Image();
@@ -132,40 +133,39 @@ const view = () => {
 	};
 
 	const setActiveProject = (currentProj) => {
-		const taskList = document.querySelectorAll(".project");
+		const projects = Array.from(document.querySelectorAll(".project"));
 
-		taskList.forEach((project) => {
+		projects.forEach((project) => {
 			project.classList.remove("active");
-			if (currentProj === Number(project.getAttribute("data-project-id"))) {
+			if (currentProj.id === Number(project.getAttribute("data-project-id"))) {
 				project.classList.add("active");
+				taskSectionTitle.textContent = currentProj.title;
 			}
 		});
 	};
 
-	const updateTasks = (proj) => {
-		const title = document.querySelector("#taskContainer h2");
+	const updateTasks = (tasks) => {
 		const empty = document.createElement("h3");
 		while (taskSection.firstChild) {
 			taskSection.removeChild(taskSection.firstChild);
 		}
 
-		if (proj === undefined) {
-			title.textContent = "Please select a project to view tasks";
+		if (tasks === undefined) {
+			taskSectionTitle.textContent = "Please select a project to view tasks";
 			empty.textContent = "Please select a project to view tasks";
 			taskSection.append(empty);
 			addTaskBtn.style.display = "none";
 			return;
 		}
 
-		if (proj.taskList.length === 0) {
-			title.textContent = proj.title;
+		if (tasks.length === 0) {
 			empty.textContent = "There's nothing here, Create a new task!";
 			taskSection.append(empty);
+			addTaskBtn.style.display = "block";
 		}
 
-		if (proj.taskList.length > 0) {
-			title.textContent = proj.title;
-			proj.taskList.forEach((element) => {
+		if (tasks.length > 0) {
+			tasks.forEach((element) => {
 				const task = document.createElement("li");
 				const check = document.createElement("input");
 				const Tasktitle = document.createElement("p");
