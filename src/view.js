@@ -144,13 +144,18 @@ const view = () => {
 		});
 	};
 
-	const updateTasks = (tasks) => {
-		const empty = document.createElement("h3");
+	const clearTasks = () => {
 		while (taskSection.firstChild) {
 			taskSection.removeChild(taskSection.firstChild);
 		}
+	};
+
+	const updateTasks = (tasks) => {
+		const empty = document.createElement("h3");
+		const tasksDOMElements = document.querySelectorAll(".task");
 
 		if (tasks === undefined) {
+			clearTasks();
 			taskSectionTitle.textContent = "Please select a project to view tasks";
 			empty.textContent = "Please select a project to view tasks";
 			taskSection.append(empty);
@@ -159,12 +164,14 @@ const view = () => {
 		}
 
 		if (tasks.length === 0) {
+			clearTasks();
 			empty.textContent = "There's nothing here, Create a new task!";
 			taskSection.append(empty);
 			addTaskBtn.style.display = "block";
 		}
 
 		if (tasks.length > 0) {
+			clearTasks();
 			tasks.forEach((element) => {
 				const task = document.createElement("li");
 				const check = document.createElement("input");
@@ -177,6 +184,16 @@ const view = () => {
 				description.innerText = element.desc;
 				date.innerText = format(new Date(element.dueDate), "dd/MM/yyyy");
 				pri.innerText = element.priority;
+
+				tasksDOMElements.forEach((taskElement) => {
+					if (
+						element.completed === true &&
+						element.id === Number(taskElement.getAttribute("data-task-id"))
+					) {
+						check.checked = true;
+						task.classList.add("taskCompleted");
+					}
+				});
 
 				check.setAttribute("type", "checkbox");
 				task.classList.add("task");

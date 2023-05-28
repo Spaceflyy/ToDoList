@@ -52,6 +52,13 @@ const controller = (() => {
 			);
 		}
 
+		if (target.getAttribute("type") === "checkbox") {
+			model.toggleCompleted(target.parentElement.getAttribute("data-task-id"));
+		}
+		if (target.getAttribute("id") === "allBtn") {
+			viewable.updateTasks(model.getAllProjectTasks());
+		}
+
 		if (target.getAttribute("id") === "projEdt") {
 			const clickedProject = target.parentElement.getAttribute("data-project-id");
 			viewable.showModal(model.projectsList[clickedProject], "projEdit");

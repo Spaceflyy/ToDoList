@@ -11,19 +11,74 @@ const model = () => {
 			taskList: [
 				{
 					id: 0,
-					title: "Test Task1",
-					desc: "Test desc",
+					title: "Test Task 1",
+					desc: "Project 1 ",
 					dueDate: "2023-05-06",
 					priority: "High",
+					completed: false,
+				},
+				{
+					id: 1,
+					title: "Test Task 2",
+					desc: "Project 1 ",
+					dueDate: "2023-05-06",
+					priority: "High",
+					completed: false,
+				},
+				{
+					id: 2,
+					title: "Test Task 3",
+					desc: "Project 1 ",
+					dueDate: "2023-05-06",
+					priority: "High",
+					completed: false,
 				},
 			],
 		},
 		{
 			id: 1,
 			title: "Test Project 2",
-			taskList: [],
+			taskList: [
+				{
+					id: 0,
+					title: "Test Task 1",
+					desc: "Project 2 ",
+					dueDate: "2023-05-06",
+					priority: "High",
+					completed: false,
+				},
+				{
+					id: 1,
+					title: "Test Task 2",
+					desc: "Project 2 ",
+					dueDate: "2023-05-06",
+					priority: "High",
+					completed: false,
+				},
+				{
+					id: 2,
+					title: "Test Task 3",
+					desc: "Project 2 ",
+					dueDate: "2023-05-06",
+					priority: "High",
+					completed: false,
+				},
+			],
 		},
 	];
+
+	const getAllProjectTasks = () => {
+		const allTasks = [];
+
+		projectsList.forEach((project) => {
+			if (project.taskList.length > 0) {
+				project.taskList.forEach((task) => {
+					allTasks.push(task);
+				});
+			}
+		});
+		return allTasks;
+	};
 
 	const project = (id, title, taskList) => {
 		return { id, title, taskList };
@@ -53,6 +108,18 @@ const model = () => {
 		return currentProject;
 	};
 
+	const toggleCompleted = (taskId) => {
+		const foundTask = projectsList[getCurrentProject()].taskList.find((T) => {
+			return T.id === Number(taskId);
+		});
+		if (foundTask.completed) {
+			foundTask.completed = false;
+		} else {
+			foundTask.completed = true;
+		}
+
+		PubSub.publish("tasksUpdated", projectsList[getCurrentProject()].taskList);
+	};
 	const addProject = (id, title, taskList = []) => {
 		id =
 			projectsList.length > 0 ? projectsList[projectsList.length - 1].id + 1 : 0;
@@ -147,6 +214,8 @@ const model = () => {
 		deleteTask,
 		updateProject,
 		getClickedProject,
+		getAllProjectTasks,
+		toggleCompleted,
 	};
 };
 

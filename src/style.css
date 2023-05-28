@@ -156,6 +156,11 @@ img {
 	cursor: pointer;
 }
 
+.taskCompleted {
+	text-decoration: line-through;
+	color: rgba(0, 0, 0, 0.7);
+}
+
 #sidebar {
 	background-color: rgb(230, 230, 230);
 	min-width: 250px;
