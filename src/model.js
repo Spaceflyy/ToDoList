@@ -97,6 +97,11 @@ const model = () => {
 
 		if (projectsList.length > 0) {
 			projectsList[index].id = index;
+		}
+
+		if (projectsList[getCurrentProject()] === undefined) {
+			PubSub.publish("tasksUpdated", undefined);
+		} else {
 			PubSub.publish("tasksUpdated", projectsList[getCurrentProject()].taskList);
 		}
 

@@ -87,7 +87,6 @@ const controller = (() => {
 
 	PubSub.subscribe("tasksUpdated", (msg, data) => {
 		viewable.updateTasks(data);
-		// viewable.setActiveProject(model.getClickedProject(model.getCurrentProject()));
 	});
 	viewable.bindProjectEdit(handleEditProject);
 	viewable.bindTaskEdit(handleEditTask);
