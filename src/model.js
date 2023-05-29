@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable import/no-extraneous-dependencies */
 import PubSub from "pubsub-js";
+import { parseISO, isThisWeek, isThisMonth } from "date-fns";
 
 const model = () => {
 	let currentProject = 0;
@@ -59,7 +60,7 @@ const model = () => {
 					id: 2,
 					title: "Test Task 3",
 					desc: "Project 2 ",
-					dueDate: "2023-05-06",
+					dueDate: "2023-06-04",
 					priority: "High",
 					completed: false,
 				},
@@ -77,7 +78,34 @@ const model = () => {
 				});
 			}
 		});
+
 		return allTasks;
+	};
+
+	const getWeekTasks = (allTasks) => {
+		const weekTasks = [];
+
+		allTasks = getAllProjectTasks();
+
+		allTasks.forEach((task) => {
+			if (isThisWeek(parseISO(task.dueDate), { weekStartsOn: 1 })) {
+				weekTasks.push(task);
+			}
+		});
+		return weekTasks;
+	};
+
+	const getMonthTasks = (allTasks) => {
+		const monthTasks = [];
+
+		allTasks = getAllProjectTasks();
+
+		allTasks.forEach((task) => {
+			if (isThisMonth(parseISO(task.dueDate))) {
+				monthTasks.push(task);
+			}
+		});
+		return monthTasks;
 	};
 
 	const project = (id, title, taskList) => {
@@ -92,6 +120,7 @@ const model = () => {
 		const projectFound = projectsList.find((proj) => {
 			return proj.id === Number(projId);
 		});
+
 		return projectFound;
 	};
 
@@ -162,8 +191,8 @@ const model = () => {
 			currentProject -= 1;
 		}
 
-		if (projectsList.length > 0) {
-			projectsList[index].id = index;
+		for (let i = 0; i < projectsList.length; i++) {
+			projectsList[i].id = i;
 		}
 
 		if (projectsList[getCurrentProject()] === undefined) {
@@ -216,6 +245,8 @@ const model = () => {
 		getClickedProject,
 		getAllProjectTasks,
 		toggleCompleted,
+		getWeekTasks,
+		getMonthTasks,
 	};
 };
 

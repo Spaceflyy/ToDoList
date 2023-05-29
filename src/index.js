@@ -59,6 +59,14 @@ const controller = (() => {
 			viewable.updateTasks(model.getAllProjectTasks());
 		}
 
+		if (target.getAttribute("id") === "thisWeekBtn") {
+			viewable.updateTasks(model.getWeekTasks());
+		}
+
+		if (target.getAttribute("id") === "thisMonthBtn") {
+			viewable.updateTasks(model.getMonthTasks());
+		}
+
 		if (target.getAttribute("id") === "projEdt") {
 			const clickedProject = target.parentElement.getAttribute("data-project-id");
 			viewable.showModal(model.projectsList[clickedProject], "projEdit");
