@@ -5,13 +5,30 @@ import { parseISO, isThisWeek, isThisMonth } from "date-fns";
 
 const model = () => {
 	let currentProject = 0;
-	const projectsList = [
+
+	let projectsList = [
 		{
 			id: 0,
+			title: "All",
+			taskList: [],
+		},
+		{
+			id: 1,
+			title: "This Week",
+			taskList: [],
+		},
+		{
+			id: 2,
+			title: "This Month",
+			taskList: [],
+		},
+		{
+			id: 3,
 			title: "Test Project 1",
 			taskList: [
 				{
 					id: 0,
+					projectId: 3,
 					title: "Test Task 1",
 					desc: "Project 1 ",
 					dueDate: "2023-05-06",
@@ -20,6 +37,7 @@ const model = () => {
 				},
 				{
 					id: 1,
+					projectId: 3,
 					title: "Test Task 2",
 					desc: "Project 1 ",
 					dueDate: "2023-05-06",
@@ -28,6 +46,7 @@ const model = () => {
 				},
 				{
 					id: 2,
+					projectId: 3,
 					title: "Test Task 3",
 					desc: "Project 1 ",
 					dueDate: "2023-05-06",
@@ -37,10 +56,11 @@ const model = () => {
 			],
 		},
 		{
-			id: 1,
+			id: 4,
 			title: "Test Project 2",
 			taskList: [
 				{
+					projectId: 4,
 					id: 0,
 					title: "Test Task 1",
 					desc: "Project 2 ",
@@ -49,6 +69,7 @@ const model = () => {
 					completed: false,
 				},
 				{
+					projectId: 4,
 					id: 1,
 					title: "Test Task 2",
 					desc: "Project 2 ",
@@ -57,6 +78,7 @@ const model = () => {
 					completed: false,
 				},
 				{
+					projectId: 4,
 					id: 2,
 					title: "Test Task 3",
 					desc: "Project 2 ",
@@ -68,14 +90,28 @@ const model = () => {
 		},
 	];
 
+	const updateStorage = () => {
+		localStorage.setItem("projects", JSON.stringify(projectsList));
+	};
+
+	const getFromStorage = () => {
+		const items = localStorage.getItem("projects");
+
+		return JSON.parse(items);
+	};
+
+	window.onload = projectsList = getFromStorage();
+
 	const getAllProjectTasks = () => {
 		const allTasks = [];
 
 		projectsList.forEach((project) => {
-			if (project.taskList.length > 0) {
-				project.taskList.forEach((task) => {
-					allTasks.push(task);
-				});
+			if (!(project.id === 0 || project.id === 1 || project.id === 2)) {
+				if (project.taskList.length > 0) {
+					project.taskList.forEach((task) => {
+						allTasks.push(task);
+					});
+				}
 			}
 		});
 
@@ -112,8 +148,16 @@ const model = () => {
 		return { id, title, taskList };
 	};
 
-	const task = (id, title, desc, dueDate, priority, completed = false) => {
-		return { id, title, desc, dueDate, priority, completed };
+	const task = (
+		id,
+		projectId,
+		title,
+		desc,
+		dueDate,
+		priority,
+		completed = false
+	) => {
+		return { id, projectId, title, desc, dueDate, priority, completed };
 	};
 
 	const getClickedProject = (projId) => {
@@ -137,17 +181,27 @@ const model = () => {
 		return currentProject;
 	};
 
-	const toggleCompleted = (taskId) => {
-		const foundTask = projectsList[getCurrentProject()].taskList.find((T) => {
+	const setPermanentTasks = () => {
+		projectsList[0].taskList = [];
+		projectsList[0].taskList = getAllProjectTasks();
+		projectsList[1].taskList = [];
+		projectsList[1].taskList = getWeekTasks();
+		projectsList[2].taskList = [];
+		projectsList[2].taskList = getMonthTasks();
+	};
+
+	const toggleCompleted = (projId, taskId) => {
+		const foundTask = projectsList[projId].taskList.find((T) => {
 			return T.id === Number(taskId);
 		});
+
 		if (foundTask.completed) {
 			foundTask.completed = false;
 		} else {
 			foundTask.completed = true;
 		}
 
-		PubSub.publish("tasksUpdated", projectsList[getCurrentProject()].taskList);
+		PubSub.publish("tasksUpdated", projectsList[getCurrentProject()]);
 	};
 	const addProject = (id, title, taskList = []) => {
 		id =
@@ -156,7 +210,8 @@ const model = () => {
 		const newProject = project(id, title, taskList);
 		projectsList.push(newProject);
 		currentProject = projectsList.length - 1;
-		PubSub.publish("tasksUpdated", projectsList[getCurrentProject()].taskList);
+
+		PubSub.publish("tasksUpdated", projectsList[getCurrentProject()]);
 		PubSub.publish("ListUpdated", projectsList);
 	};
 
@@ -167,17 +222,19 @@ const model = () => {
 						projectsList[getCurrentProject()].taskList.length - 1
 				  ].id + 1
 				: 0;
-
+		const projectId = getCurrentProject();
 		const newTask = task(
 			id,
+			projectId,
 			freshTask[0],
 			freshTask[1],
 			freshTask[2],
 			freshTask[3]
 		);
-		projectsList[getCurrentProject()].taskList.push(newTask);
 
-		PubSub.publish("tasksUpdated", projectsList[getCurrentProject()].taskList);
+		projectsList[getCurrentProject()].taskList.push(newTask);
+		setPermanentTasks();
+		PubSub.publish("tasksUpdated", projectsList[getCurrentProject()]);
 	};
 
 	const deleteProject = (id) => {
@@ -190,29 +247,28 @@ const model = () => {
 		if (!(currentProject === 0)) {
 			currentProject -= 1;
 		}
-
-		for (let i = 0; i < projectsList.length; i++) {
+		for (let i = 0; i < projectsList.length; i += 1) {
 			projectsList[i].id = i;
 		}
 
 		if (projectsList[getCurrentProject()] === undefined) {
 			PubSub.publish("tasksUpdated", undefined);
 		} else {
-			PubSub.publish("tasksUpdated", projectsList[getCurrentProject()].taskList);
+			setPermanentTasks();
+			PubSub.publish("tasksUpdated", projectsList[getCurrentProject()]);
 		}
 
 		PubSub.publish("ListUpdated", projectsList);
 	};
 
-	const deleteTask = (id) => {
-		const index = projectsList[getCurrentProject()].taskList.findIndex(
-			(taskid) => {
-				return taskid.id === Number(id);
-			}
-		);
+	const deleteTask = (projectid, id) => {
+		const index = projectsList[projectid].taskList.findIndex((taskid) => {
+			return taskid.id === Number(id);
+		});
 
-		projectsList[getCurrentProject()].taskList.splice(index, 1);
-		PubSub.publish("tasksUpdated", projectsList[getCurrentProject()].taskList);
+		projectsList[projectid].taskList.splice(index, 1);
+		setPermanentTasks();
+		PubSub.publish("tasksUpdated", projectsList[getCurrentProject()]);
 	};
 
 	const updateTask = (updatedTask) => {
@@ -224,7 +280,7 @@ const model = () => {
 		currentProjTasks[0].dueDate = newDate;
 		currentProjTasks[0].priority = newPri;
 
-		PubSub.publish("tasksUpdated", projectsList[getCurrentProject()].taskList);
+		PubSub.publish("tasksUpdated", projectsList[getCurrentProject()]);
 	};
 
 	const updateProject = (id, newtitle) => {
@@ -247,6 +303,9 @@ const model = () => {
 		toggleCompleted,
 		getWeekTasks,
 		getMonthTasks,
+		setPermanentTasks,
+		getFromStorage,
+		updateStorage,
 	};
 };
 

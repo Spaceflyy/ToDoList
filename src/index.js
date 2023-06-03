@@ -5,19 +5,13 @@ import PubSub from "pubsub-js";
 import view from "./view";
 import model from "./model";
 
-const header = document.createElement("div");
-const title = document.createElement("h1");
-
-title.innerHTML = "To Do List";
-header.setAttribute("id", "header");
-header.appendChild(title);
-
 const controller = (() => {
 	const viewable = view();
 
+	model.setPermanentTasks();
 	viewable.updateProjects(model.projectsList);
-	viewable.updateTasks(model.projectsList[model.getCurrentProject()].taskList);
 	viewable.setActiveProject(model.getClickedProject(model.getCurrentProject()));
+	viewable.updateTasks(model.projectsList[model.getCurrentProject()]);
 
 	const handleAddProject = (projectTitle) => {
 		model.addProject(0, projectTitle);
@@ -41,7 +35,7 @@ const controller = (() => {
 			viewable.setActiveProject(
 				model.getClickedProject(target.getAttribute("data-project-id"))
 			);
-			viewable.updateTasks(model.projectsList[model.getCurrentProject()].taskList);
+			viewable.updateTasks(model.projectsList[model.getCurrentProject()]);
 		}
 		if (target.getAttribute("id") === "taskEdt") {
 			viewable.showModal(
@@ -53,18 +47,10 @@ const controller = (() => {
 		}
 
 		if (target.getAttribute("type") === "checkbox") {
-			model.toggleCompleted(target.parentElement.getAttribute("data-task-id"));
-		}
-		if (target.getAttribute("id") === "allBtn") {
-			viewable.updateTasks(model.getAllProjectTasks());
-		}
-
-		if (target.getAttribute("id") === "thisWeekBtn") {
-			viewable.updateTasks(model.getWeekTasks());
-		}
-
-		if (target.getAttribute("id") === "thisMonthBtn") {
-			viewable.updateTasks(model.getMonthTasks());
+			model.toggleCompleted(
+				target.parentElement.getAttribute("data-proj-id"),
+				target.parentElement.getAttribute("data-task-id")
+			);
 		}
 
 		if (target.getAttribute("id") === "projEdt") {
@@ -91,17 +77,22 @@ const controller = (() => {
 		}
 
 		if (target.getAttribute("id") === "taskDel") {
-			model.deleteTask(target.parentElement.getAttribute("data-task-id"));
+			model.deleteTask(
+				target.parentElement.getAttribute("data-proj-id"),
+				target.parentElement.getAttribute("data-task-id")
+			);
 		}
 	};
 
 	PubSub.subscribe("ListUpdated", (msg, data) => {
 		viewable.updateProjects(data);
 		viewable.setActiveProject(model.getClickedProject(model.getCurrentProject()));
+		model.updateStorage();
 	});
 
 	PubSub.subscribe("tasksUpdated", (msg, data) => {
 		viewable.updateTasks(data);
+		model.updateStorage();
 	});
 	viewable.bindProjectEdit(handleEditProject);
 	viewable.bindTaskEdit(handleEditTask);
