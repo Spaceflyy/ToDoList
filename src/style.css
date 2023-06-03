@@ -39,6 +39,15 @@ header {
 	height: 60px;
 }
 
+#menuIcon {
+	display: none;
+	padding: 20px;
+}
+
+header h1 {
+	flex: 1;
+}
+
 .projModalBg,
 .taskModalBg {
 	display: none;
@@ -219,7 +228,21 @@ img {
 }
 
 @media only screen and (max-width: 600px) {
+	#sidebar {
+		position: fixed;
+	}
 	.modal {
 		width: 90%;
+	}
+	#menuIcon {
+		display: block;
+	}
+
+	.task {
+		font-size: 11px;
+	}
+
+	#subtitle {
+		font-size: 9px;
 	}
 }

@@ -27,6 +27,8 @@ const controller = (() => {
 	const handleEditProject = (newTitle) => {
 		model.updateProject(viewable.getProjToEdit(), newTitle);
 	};
+
+	const handleMenu = () => {};
 	const handleClick = (event) => {
 		const { target } = event;
 
@@ -99,4 +101,5 @@ const controller = (() => {
 	viewable.bindClick(handleClick);
 	viewable.bindTitleSubmit(handleAddProject);
 	viewable.bindTaskSubmit(handleAddTask);
+	viewable.bindViewMenu();
 })(model, view);

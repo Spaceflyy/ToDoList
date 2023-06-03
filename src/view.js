@@ -28,6 +28,7 @@ const view = () => {
 	const taskSectionTitle = document.querySelector("#taskContainer h2");
 	const permProjectSection = document.getElementById("permProjects");
 	const modalTitle = document.querySelector("#modalTitle");
+	const menuBtn = document.getElementById("menuIcon");
 
 	const createImg = (name, image, idName, className) => {
 		name = new Image();
@@ -39,6 +40,13 @@ const view = () => {
 		return name;
 	};
 
+	const viewMenu = () => {
+		const sidebar = document.getElementById("sidebar");
+
+		sidebar.style.display === "none"
+			? (sidebar.style.display = "block")
+			: (sidebar.style.display = "none");
+	};
 	const showModal = (data, formToShow) => {
 		const modal = document.querySelector(".projModalBg");
 		const taskAddBtn = document.getElementById("taskSubmit");
@@ -208,15 +216,6 @@ const view = () => {
 					check.checked = true;
 					task.classList.add("taskCompleted");
 				}
-				// tasksDOMElements.forEach((taskElement) => {
-				// 	if (
-				// 		element.completed === true &&
-				// 		element.id === Number(taskElement.getAttribute("data-task-id"))
-				// 	) {
-				// 		check.checked = true;
-				// 		task.classList.add("taskCompleted");
-				// 	}
-				// });
 
 				check.setAttribute("type", "checkbox");
 				task.classList.add("task");
@@ -267,6 +266,12 @@ const view = () => {
 		});
 	};
 
+	const bindViewMenu = () => {
+		menuBtn.addEventListener("click", () => {
+			viewMenu();
+		});
+	};
+
 	function bindClick(handler) {
 		root.addEventListener("click", (event) => {
 			handler(event);
@@ -292,6 +297,8 @@ const view = () => {
 		bindTaskEdit,
 		bindProjectEdit,
 		getProjToEdit,
+		bindViewMenu,
+		viewMenu,
 	};
 };
 
