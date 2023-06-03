@@ -100,7 +100,9 @@ const model = () => {
 		return JSON.parse(items);
 	};
 
-	window.onload = projectsList = getFromStorage();
+	if (!(localStorage.getItem("projects") === null)) {
+		window.onload = projectsList = getFromStorage();
+	}
 
 	const getAllProjectTasks = () => {
 		const allTasks = [];
