@@ -43,9 +43,9 @@ const view = () => {
 	const viewMenu = () => {
 		const sidebar = document.getElementById("sidebar");
 
-		sidebar.style.display === "none"
-			? (sidebar.style.display = "block")
-			: (sidebar.style.display = "none");
+		sidebar.style.display === "block"
+			? (sidebar.style.display = "none")
+			: (sidebar.style.display = "block");
 	};
 	const showModal = (data, formToShow) => {
 		const modal = document.querySelector(".projModalBg");
